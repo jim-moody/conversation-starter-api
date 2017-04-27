@@ -1,5 +1,7 @@
-class LinesController < ApplicationController
-  before_action :set_line, only: [:show, :update, :destroy]
+# frozen_string_literal: true
+
+class LinesController < OpenReadController
+  before_action :set_line, only: %i[show update destroy]
 
   # GET /lines
   def index
@@ -15,7 +17,7 @@ class LinesController < ApplicationController
 
   # POST /lines
   def create
-    @line = Line.new(line_params)
+    @line = current_user.lines.build(line_params)
 
     if @line.save
       render json: @line, status: :created, location: @line
@@ -39,13 +41,14 @@ class LinesController < ApplicationController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_line
-      @line = Line.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def line_params
-      params.require(:line).permit(:user_id, :text)
-    end
+  # Use callbacks to share common setup or constraints between actions.
+  def set_line
+    @line = current_user.lines.find(params[:id])
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def line_params
+    params.require(:line).permit(:user_id, :text)
+  end
 end

@@ -5,6 +5,8 @@ URL_PATH="/lines/1"
 curl "${API}${URL_PATH}" \
   --include \
   --request GET \
-  --header "Content-Type: application/json"
+  --header "Content-Type: application/json" \
+  --header "Authorization: Token token=$TOKEN"
+
 
 echo
