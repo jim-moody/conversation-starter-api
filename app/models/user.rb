@@ -4,4 +4,5 @@ class User < ApplicationRecord
   include Authentication
   has_many :examples
   has_many :lines
+  has_many :votes
 end
