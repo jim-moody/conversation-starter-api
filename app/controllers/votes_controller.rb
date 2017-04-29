@@ -13,6 +13,13 @@ class VotesController < OpenReadController
     render json: @vote
   end
 
+  def line
+    # @votes = Vote.all
+    # render json: @votes
+    @vote = Vote.find_by(line_id: params[:id])
+    render json: @vote
+  end
+
   # POST /votes
   def create
     @vote = current_user.votes.build(vote_params)
