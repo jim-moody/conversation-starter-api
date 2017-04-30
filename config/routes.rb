@@ -5,7 +5,6 @@ Rails.application.routes.draw do
   post '/sign-in' => 'users#signin'
   delete '/sign-out/:id' => 'users#signout'
   patch '/change-password/:id' => 'users#changepw'
-  get '/votes/line/:id' => 'votes#line'
   resources :lines
   resources :examples, except: %i[new edit]
   resources :votes, except: %i[destroy new edit]
