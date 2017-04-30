@@ -22,12 +22,16 @@ class VotesController < OpenReadController
 
   # POST /votes
   def create
-    @vote = current_user.votes.build(vote_params)
-
-    if @vote.save
-      render json: @vote, status: :created, location: @vote
+    if vote_exists
+      @vote = current_user.votes.find_by(line_id: params[:vote][:line_id])
+      update
     else
-      render json: @vote.errors, status: :unprocessable_entity
+      @vote = current_user.votes.build(vote_params)
+      if @vote.save
+        render json: @vote, status: :created, location: @vote
+      else
+        render json: @vote.errors, status: :unprocessable_entity
+      end
     end
   end
 
@@ -46,13 +50,20 @@ class VotesController < OpenReadController
   end
 
   private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_vote
-      @vote = current_user.votes.find(params[:id])
-    end
 
-    # Only allow a trusted parameter "white list" through.
-    def vote_params
-      params.require(:vote).permit(:user_id, :line_id, :value)
+  # Use callbacks to share common setup or constraints between actions.
+  def set_vote
+    @vote = current_user.votes.find(params[:id])
+  end
+
+  # Only allow a trusted parameter "white list" through.
+  def vote_params
+    params.require(:vote).permit(:user_id, :line_id, :value)
+  end
+
+  def vote_exists
+    current_user.votes.any? do |vote|
+      vote.line_id == params[:vote][:line_id].to_i
     end
+  end
 end
