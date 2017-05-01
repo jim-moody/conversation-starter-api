@@ -16,8 +16,13 @@ class VotesController < OpenReadController
   # POST /votes
   def create
     if vote_exists
+      # if vote value from vote params = current users vote, destroy vote
       @vote = current_user.votes.find_by(line_id: params[:vote][:line_id])
-      update
+      if @vote[:value] == vote_params[:value].to_i
+        destroy
+      else
+        update
+      end
     else
       @vote = current_user.votes.build(vote_params)
       if @vote.save
