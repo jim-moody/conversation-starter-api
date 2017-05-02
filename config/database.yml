@@ -1,4 +1,4 @@
-<% project_name = 'chat-up-api' %>
+<% project_name = 'conversation-starter-api' %>
 
 default: &default
   adapter: postgresql
