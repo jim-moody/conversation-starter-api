@@ -2,7 +2,7 @@ class LineSerializer < ActiveModel::Serializer
   attributes :id, :text, :editable, :votes
 
   def editable
-    scope == object.user
+    (scope && User.admin?(scope)) || scope == object.user
   end
 
   def votes

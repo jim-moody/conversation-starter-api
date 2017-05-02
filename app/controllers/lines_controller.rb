@@ -44,7 +44,11 @@ class LinesController < OpenReadController
 
   # Use callbacks to share common setup or constraints between actions.
   def set_line
-    @line = current_user.lines.find(params[:id])
+    @line = if User.admin?(current_user)
+              Line.find(params[:id])
+            else
+              current_user.lines.find(params[:id])
+            end
   end
 
   # Only allow a trusted parameter "white list" through.
